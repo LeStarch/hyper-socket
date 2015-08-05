@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     }
     else if (argc == 3)
     {
-        dsize = atol(argv[3]);
+        dsize = atol(argv[2]);
         fail(dsize,0,"Invalid length to read\n");
         data = bufferBySize(argv[1],dsize);
     }

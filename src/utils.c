@@ -5,7 +5,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "util.h"
+#include "utils.h"
 /**
  * Finds minimum of two unsigned long longs
  * @param ull1 - first argument
