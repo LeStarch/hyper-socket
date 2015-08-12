@@ -3,7 +3,7 @@
 all: client server stream
 
 stream:	include/utils.h include/data.h include/hyper-socket.h libdata.so src/stream.c
-	gcc -o stream -I./include/ -L. -ldata src/stream.c
+	gcc -g -o stream -I./include/ -L. -ldata src/stream.c
 server:	include/utils.h include/data.h include/hyper-socket.h libdata.so src/server.c
 	gcc -o server -I./include/ -L. -ldata src/server.c
 client:	include/utils.h include/hyper-socket.h libdata.so src/client.c
