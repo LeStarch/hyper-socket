@@ -7,7 +7,7 @@
 
 #ifndef HYPER_SOCKET_INCLUDE_DATA_H_
 #define HYPER_SOCKET_INCLUDE_DATA_H_
-    #define BLOCK_SIZE 4096ull
+    #define BLOCK_SIZE 65536ull
     /**
      * Data structure to hold data and metadata
      */
