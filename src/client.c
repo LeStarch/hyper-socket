@@ -19,12 +19,12 @@
  * Main program
  */
 int main(int argc, char** argv) {
-    if (argc != 2 )
+    if (argc != 3 )
     {
         printf("%s:\n\t<host>\n",argv[0]);
         exit(-1);
     }
-    short port = PORT;
+    short port = (short)atoi(argv[2]);
     char buffer[BLOCK_SIZE];
     printf("Establishing connection to: %d\n",port);
     int conn = internet(port,inet_addr(argv[1]),CLIENT);

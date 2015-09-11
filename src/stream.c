@@ -29,14 +29,14 @@ int main(int argc, char** argv) {
     int ret = signal(SIGINT, catch) == SIG_ERR;
     fail(ret,1,"Failed to register signal handler");
     size_t dsize = 10737418240ull;
-    if (argc < 2 || argc > 3)
+    if (argc < 3 || argc > 4)
     {
-        printf("%s:\n\t<infile> [size]\n",argv[0]);
+        printf("%s:\n\t<infile> <port> [size]\n",argv[0]);
         exit(-1);
     }
-    else if (argc == 3)
+    else if (argc == 4)
     {
-        dsize = atol(argv[2]);
+        dsize = atol(argv[3]);
         fail(dsize,0,"Invalid length to read\n");
         data = bufferBySize(argv[1],dsize);
     }
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
     {
         data = buffer(argv[1]);
     }
-    short port = PORT;
+    short port = (short)atoi(argv[2]);
     list = internet(port,htonl(INADDR_ANY),SERVER);
     printf("Establishing connection to: %d\n",port);
     conn = establish(list);
