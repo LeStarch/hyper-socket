@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <time.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 #include "utils.h"
@@ -56,7 +56,10 @@ void fail(int result, int check, char* message)
  */
 double now()
 {
-    clock_t stamp;
-    stamp = clock();
-    return (double)(stamp)/CLOCKS_PER_SEC;
+    struct timeval tv;
+    if (gettimeofday(&tv,NULL) != 0)
+        return -1.0;
+    double stamp = (double)tv.tv_sec;
+    stamp += ((double)tv.tv_usec)/1000000.0;
+    return stamp;
 }
