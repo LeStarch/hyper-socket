@@ -22,7 +22,6 @@ int conn = -1;
 size_t total = 0;
 
 static void catch(int signo) {
-    end = now();
     printf("Written %zu bytes in %f seconds or %fB/s\n",total,(end-start),total/(end-start));
     close(conn);
     exit(0);
@@ -45,12 +44,19 @@ int main(int argc, char** argv) {
     conn = internet(port,inet_addr(argv[1]),CLIENT);
     double start,end;
     printf("Reading data from: %s:%d\n",argv[1],port);
-    int ret = 0;
+    int ret = 1;
     start = now();
-    while (0 < (ret = read(conn,buffer,BLOCK_SIZE))) {
+
+    while (0 < ret) {
+        sigset_t set,old;
+        sigfillset(&set);
+        sigprocmask(SIG_BLOCK,&set,&old);
+        ret = read(conn,buffer,BLOCK_SIZE);
         total += ret;
+        end = now();
+        sigprocmask(SIG_SETMASK,&old,NULL);
     }
-    end = now();
+
     printf("Read %zu bytes in %f seconds or %fB/s\n",total,(end-start),total/(end-start));
     close(conn);
 }

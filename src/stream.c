@@ -14,7 +14,6 @@ int conn = -1,list = -1;
 size_t total = 0;
 
 static void catch(int signo) {
-    end = now();
     printf("Written %zu bytes in %f seconds or %fB/s\n",total,(end-start),total/(end-start));
     deallocate(data);
     close(conn);
@@ -57,11 +56,15 @@ int main(int argc, char** argv) {
         size_t unwritten = data->size;
         while (unwritten > 0)
         {
-             size_t tmp = write(conn,data->buffer+(data->size - unwritten),minll(BLOCK_SIZE,unwritten));
-             fail(tmp,-1,"Failed to write file");
-             unwritten -= tmp;
-             total += tmp;
-             end = now();
+            sigset_t set,old;
+            sigfillset(&set);
+            sigprocmask(SIG_BLOCK,&set,&old);
+            size_t tmp = write(conn,data->buffer+(data->size - unwritten),minll(BLOCK_SIZE,unwritten));
+            unwritten -= tmp;
+            total += tmp;
+            end = now();
+            sigprocmask(SIG_SETMASK,&old,NULL);
+            fail(tmp,-1,"Failed to write file");
         }
         //saveToFd(data,conn);
         //write(conn,data->buffer,data->size);
