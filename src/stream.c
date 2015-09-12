@@ -14,7 +14,7 @@ int conn = -1,list = -1;
 size_t total = 0;
 
 static void catch(int signo) {
-    printf("Written %zu bytes in %f seconds or %fB/s\n",total,(end-start),total/(end-start));
+    printf("Total %zu bytes in %f seconds or %fB/s\n",total,(end-start),total/(end-start));
     deallocate(data);
     close(conn);
     close(list);
@@ -50,10 +50,10 @@ int main(int argc, char** argv) {
     start = now();
     total = 0;
     while (1) {
-        double start,end;
+        double new;
         size_t tmp = 0;
         printf("Saving %zu bytes to: %d\n",dsize,port);
-        start = now();
+        new = now();
         size_t unwritten = data->size;
         while (unwritten > 0)
         {
@@ -72,8 +72,9 @@ int main(int argc, char** argv) {
         }
         //saveToFd(data,conn);
         //write(conn,data->buffer,data->size);
-        printf("Written %zu bytes in %f seconds or %fB/s\n",(data->size - unwritten),(end-start),data->size/(end-start));
+        printf("Written %zu bytes in %f seconds or %fB/s\n",(data->size - unwritten),(end-new),data->size/(end-new));
         if (tmp == -1)
             break;
     }
+    printf("Total %zu bytes in %f seconds or %fB/s\n",(total),(end-start),data->size/(end-start));
 }

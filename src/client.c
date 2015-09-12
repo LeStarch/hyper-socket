@@ -22,7 +22,7 @@ int conn = -1;
 size_t total = 0;
 
 static void catch(int signo) {
-    printf("Written %zu bytes in %f seconds or %fB/s\n",total,(end-start),total/(end-start));
+    printf("Total %zu bytes in %f seconds or %fB/s\n",total,(end-start),total/(end-start));
     close(conn);
     exit(0);
 }
