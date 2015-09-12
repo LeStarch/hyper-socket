@@ -61,10 +61,10 @@ int main(int argc, char** argv) {
              fail(tmp,-1,"Failed to write file");
              unwritten -= tmp;
              total += tmp;
+             end = now();
         }
         //saveToFd(data,conn);
         //write(conn,data->buffer,data->size);
-        end = now();
         printf("Written %zu bytes in %f seconds or %fB/s\n",(data->size - unwritten),(end-start),data->size/(end-start));
     }
 }
