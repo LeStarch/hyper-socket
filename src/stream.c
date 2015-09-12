@@ -54,10 +54,17 @@ int main(int argc, char** argv) {
         double start,end;
         printf("Saving %zu bytes to: %d\n",dsize,port);
         start = now();
-        saveToFd(data,conn);
+        size_t unwritten = data->size;
+        while (unwritten > 0)
+        {
+             size_t tmp = write(conn,data->buffer+(data->size - unwritten),minll(BLOCK_SIZE,unwritten));
+             fail(tmp,-1,"Failed to write file");
+             unwritten -= tmp;
+             total += tmp;
+        }
+        //saveToFd(data,conn);
         //write(conn,data->buffer,data->size);
         end = now();
-        total += data->size;
-        printf("Written %zu bytes in %f seconds or %fB/s\n",data->size,(end-start),data->size/(end-start));
+        printf("Written %zu bytes in %f seconds or %fB/s\n",(data->size - unwritten),(end-start),data->size/(end-start));
     }
 }
