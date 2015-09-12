@@ -72,9 +72,9 @@ int main(int argc, char** argv) {
         }
         //saveToFd(data,conn);
         //write(conn,data->buffer,data->size);
-        printf("Written %zu bytes in %f seconds or %fB/s\n",(data->size - unwritten),(end-new),data->size/(end-new));
+        printf("Written %zu bytes in %f seconds or %fB/s\n",(data->size - unwritten),(end-new),(data->size - unwritten)/(end-new));
         if (tmp == -1)
             break;
     }
-    printf("Total %zu bytes in %f seconds or %fB/s\n",(total),(end-start),data->size/(end-start));
+    printf("Total %zu bytes in %f seconds or %fB/s\n",(total),(end-start),total/(end-start));
 }
