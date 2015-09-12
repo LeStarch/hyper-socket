@@ -51,6 +51,7 @@ int main(int argc, char** argv) {
     total = 0;
     while (1) {
         double start,end;
+        size_t tmp = 0;
         printf("Saving %zu bytes to: %d\n",dsize,port);
         start = now();
         size_t unwritten = data->size;
@@ -59,15 +60,20 @@ int main(int argc, char** argv) {
             sigset_t set,old;
             sigfillset(&set);
             sigprocmask(SIG_BLOCK,&set,&old);
-            size_t tmp = write(conn,data->buffer+(data->size - unwritten),minll(BLOCK_SIZE,unwritten));
+            tmp = write(conn,data->buffer+(data->size - unwritten),minll(BLOCK_SIZE,unwritten));
+            if (tmp == -1) {
+                end = now();
+                break;
+            }
             unwritten -= tmp;
             total += tmp;
             end = now();
             sigprocmask(SIG_SETMASK,&old,NULL);
-            fail(tmp,-1,"Failed to write file");
         }
         //saveToFd(data,conn);
         //write(conn,data->buffer,data->size);
         printf("Written %zu bytes in %f seconds or %fB/s\n",(data->size - unwritten),(end-start),data->size/(end-start));
+        if (tmp == -1)
+            break;
     }
 }

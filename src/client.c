@@ -42,7 +42,6 @@ int main(int argc, char** argv) {
     char buffer[BLOCK_SIZE];
     printf("Establishing connection to: %d\n",port);
     conn = internet(port,inet_addr(argv[1]),CLIENT);
-    double start,end;
     printf("Reading data from: %s:%d\n",argv[1],port);
     int ret = 1;
     start = now();
